@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS Ceria - Ibu Nida</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --bg-soft: #FFF9E3;
+            --pink: #FF7675;
+            --cyan: #00CEC9;
+            --yellow: #FDCB6E;
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: var(--bg-soft); 
+            color: #444; 
+            margin: 0;
+        }
+
+        h1, h2, h3, .nav-link, .btn-ceria { 
+            font-family: 'Fredoka', sans-serif; 
+            font-weight: 600;
+        }
+
+        /* Login Screen */
+        #login-screen {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #A29BFE 0%, #6C5CE7 100%);
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: white;
+            min-height: 100vh;
+            border-right: 4px dashed var(--primary);
+            padding: 30px 20px;
+        }
+
+        .nav-link {
+            color: #666;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--primary);
+            color: white !important;
+            transform: translateX(10px);
+        }
+
+        /* Colorful Cards */
+        .card-custom {
+            border: none;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .btn-ceria {
+            border-radius: 50px;
+            padding: 10px 30px;
+            border: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .btn-ceria:active { transform: scale(0.95); }
+
+        /* Sections */
+        .dashboard-section { display: none; }
+        .active-section { display: block; animation: fadeInUp 0.5s ease; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Badge Grade */
+        .grade-badge {
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: var(--yellow);
+            font-size: 1.5rem; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="login-card">
+        <div style="font-size: 4rem;">🎨</div>
+        <h2 class="mb-4" style="color: var(--primary);">Halo Ibu Nida!</h2>
+        <input type="text" id="username" class="form-control mb-3 rounded-pill" placeholder="Username">
+        <input type="password" id="password" class="form-control mb-4 rounded-pill" placeholder="Password">
+        <button onclick="handleLogin()" class="btn btn-ceria w-100" style="background: var(--pink);">Buka Kelas ✨</button>
+        <p class="mt-3 small text-muted">Akses: aulianidah / Rahasia1</p>
+    </div>
+</div>
+
+<div id="main-app" style="display: none;">
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 sidebar">
+                <h4 class="mb-5 text-center" style="color: var(--primary);">🌈 LMS Yasmin</h4>
+                <div class="nav flex-column">
+                    <a class="nav-link active" onclick="showSection('guru-home')">🏠 Beranda</a>
+                    <a class="nav-link" onclick="showSection('guru-admin')">📝 Administrasi</a>
+                    <a class="nav-link" onclick="showSection('guru-tugas')">📚 Materi & Tugas</a>
+                    <a class="nav-link" onclick="showSection('guru-nilai')">⭐ Nilai Siswa</a>
+                    <hr>
+                    <a class="nav-link" onclick="showSection('siswa-mode')" style="color: var(--cyan) !important;">🎒 Mode Siswa</a>
+                    <a class="nav-link text-danger mt-5" onclick="location.reload()">Logout</a>
+                </div>
+            </nav>
+
+            <main class="col-md-9 col-lg-10 p-4">
+                
+                <div id="guru-home" class="dashboard-section active-section">
+                    <div class="card-custom" style="background-color: var(--cyan); color: white;">
+                        <h2>Selamat Datang, Yasmin! 👋</h2>
+                        <p>Mari buat suasana belajar yang menyenangkan hari ini.</p>
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-2">
+                                <label class="small">Wali Kelas:</label>
+                                <input type="text" id="pref-wali" class="form-control rounded-pill" placeholder="Contoh: 8-C" oninput="syncInfo()">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small">Mata Pelajaran:</label>
+                                <input type="text" id="pref-mapel" class="form-control rounded-pill" placeholder="Contoh: BK" oninput="syncInfo()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="guru-admin" class="dashboard-section">
+                    <h3>📝 Administrasi & Absensi</h3>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="card-custom bg-white">
+                                <h5>Input Nama Siswa (Massal)</h5>
+                                <textarea id="siswaList" class="form-control mb-3" rows="6" placeholder="Ketik nama siswa...&#10;Contoh:&#10;Budi&#10;Ani&#10;Santi"></textarea>
+                                <button class="btn btn-ceria" style="background: var(--primary);" onclick="alert('Data Tersimpan ke Database!')">Simpan Nama Siswa</button>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card-custom" style="background: var(--yellow);">
+                                <h5>Unduh Rekap <span class="badge-wali"></span></h5>
+                                <button class="btn btn-dark w-100 mb-2 rounded-pill">Excel Keseluruhan</button>
+                                <button class="btn btn-dark w-100 rounded-pill">Excel Bulanan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="guru-tugas" class="dashboard-section">
+                    <h3>📚 Materi & Tugas</h3>
+                    <div class="card-custom bg-white">
+                        <h5>Kirim Materi Link</h5>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control rounded-start-pill" placeholder="Link YouTube/Google Drive">
+                            <button class="btn btn-ceria rounded-end-pill" style="background: var(--cyan);">Share</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card-custom text-center bg-white border border-info">
+                                <span style="font-size: 2rem;">📝</span>
+                                <h6>PG (Pilihan Ganda)</h6>
+                                <p class="small text-muted">Bisa atur durasi & waktu.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card-custom text-center bg-white border border-warning">
+                                <span style="font-size: 2rem;">✍️</span>
+                                <h6>Tugas Essay</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card-custom text-center bg-white border border-danger">
+                                <span style="font-size: 2rem;">👥</span>
+                                <h6>Tugas Kelompok</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="guru-nilai" class="dashboard-section">
+                    <h3>⭐ Papan Nilai & Rapor</h3>
+                    <div class="card-custom bg-white">
+                        <div class="d-flex justify-content-between mb-3">
+                            <button class="btn btn-sm btn-outline-primary">+ Tambah Kolom Nilai</button>
+                            <span class="fw-bold">KKM: 75</span>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr><th>Nama Siswa</th><th>Tugas 1</th><th>Grade</th><th>Status</th><th>Aksi</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ani Sholihah</td>
+                                    <td><input type="number" class="form-control form-control-sm w-50" value="85"></td>
+                                    <td><span class="badge bg-success">A</span></td>
+                                    <td>Tercapai</td>
+                                    <td><button class="btn btn-sm btn-info text-white">Bulatkan</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="siswa-mode" class="dashboard-section">
+                    <div class="card-custom" style="background: var(--pink); color: white;">
+                        <h2>Halo, Siswa Hebat! 🌟</h2>
+                        <p>Username: (Nama Kamu) | Password Default: 123456</p>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="card-custom bg-white">
+                                <h5>Materi Untukmu 📖</h5>
+                                <p class="text-muted small">Silahkan klik link materi yang diberikan Ibu Nida.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-custom bg-white">
+                                <h5>Hasil Belajarku ⭐</h5>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span>Tugas Konseling 1</span>
+                                    <div class="grade-badge">A</div>
+                                </div>
+                                <p class="small text-success mt-2">Status: Selesai Dikerjakan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Login Logic
+    function handleLogin() {
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+
+        if(u === 'aulianidah' && p === 'Rahasia1') {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+        } else {
+            alert('Username atau Password salah ya, Yas!');
+        }
+    }
+
+    // Sidebar Navigation
+    function showSection(sectionId) {
+        document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(sectionId).classList.add('active-section');
+        
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
+    // Sync Information Wali Kelas & Mapel
+    function syncInfo() {
+        const wali = document.getElementById('pref-wali').value;
+        const badges = document.querySelectorAll('.badge-wali');
+        badges.forEach(b => b.innerText = wali ? '(' + wali + ')' : '');
+    }
+</script>
+
+</body>
+</html>
